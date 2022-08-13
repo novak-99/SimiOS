@@ -8,6 +8,7 @@
 bool shift = false; 
 bool caps_lock = false; 
 bool control = false; 
+bool alt = false; 
 
 // arrowpad flags
 int text_col; 
@@ -29,6 +30,12 @@ void scan_code_handler(unsigned char scan_code){
 		case 0xB6: // right shift released
 		case 0xAA: // left shift released
 			shift = false; 
+			break;
+		case 0x38: // right or left alt pressed
+			alt = true; 
+			break;
+		case 0xB8:
+			alt = false;
 			break;
 		case 0x1D: // right or left control pressed
 			control = true; 
@@ -139,7 +146,11 @@ void scan_code_handler(unsigned char scan_code){
 			text_col_handler();
 			break;
 		case 0x26:
-			if(caps_lock || shift) {
+			if(control && alt){
+				clear_screen();
+				break;
+			}
+			else if(caps_lock || shift) {
 				print("L");
 				text_col_handler();
 				break;
@@ -451,6 +462,15 @@ void scan_code_handler(unsigned char scan_code){
 				break;
 			}
 			print(".");
+			text_col_handler();
+			break;
+		case 0x35:
+			if(shift){
+				print("?");
+				text_col_handler();
+				break;
+			}
+			print("/");
 			text_col_handler();
 			break;
 		case 0x39:

@@ -168,7 +168,7 @@ void readln(){
 		message_buffer[i] = c;
 		if(message_buffer[i] == ' '){
 			message_buffer[i] = '\0';
-			if(str_eq(message_buffer,  verr)){	
+			if(str_eq(message_buffer,  verr)){
 				print("SimiOS, Version 0.0.1.\n");
 			} 
 			else if(str_eq(message_buffer, cls)){
@@ -189,6 +189,170 @@ void readln(){
 						break;
 					}
 				}
+			}
+			// add from 44 -> 53
+			else if(is_number(message_buffer[0])){
+				int final_result = 0;
+				
+				int current_number = 0; // leave it un-inited.
+				bool is_op = false;
+				char* current_op = ' ';
+				// 1 + 1
+				
+				bool op_done = false; 
+				
+				for(int i = 0; message_buffer[i] != ' '; i++){
+					
+					// add from 44 -> 53
+					if(is_number(message_buffer[i])){
+						current_number *= 10; 
+						current_number += message_buffer[i] - 48;
+					}
+					
+					else if(message_buffer[i] == '+'){
+						if(current_op == ' '){
+							final_result = current_number; 
+						}
+						else if(current_op == '+'){
+							final_result += current_number; 
+						}
+						else if(current_op == '-'){
+							final_result -= current_number; 
+						}
+						else if(current_op == '*'){
+							final_result *= current_number; 
+						}
+						else if(current_op == '/'){
+							final_result /= current_number; 
+						}
+						current_op = '+';
+						
+						current_number = 0;
+					}
+					else if(message_buffer[i] == '-'){
+					
+						if(current_op == ' '){
+							final_result = current_number; 
+						}
+						else if(current_op == '+'){
+							final_result += current_number; 
+						}
+						else if(current_op == '-'){
+							final_result -= current_number; 
+						}
+						else if(current_op == '*'){
+							final_result *= current_number; 
+						}
+						else if(current_op == '/'){
+							final_result /= current_number; 
+						}
+						current_op = '-';
+						
+						current_number = 0;
+					}
+					else if(message_buffer[i] == '*'){
+					
+						if(current_op == ' '){
+							final_result = current_number; 
+						}
+						else if(current_op == '+'){
+							final_result += current_number; 
+						}
+						else if(current_op == '-'){
+							final_result -= current_number; 
+						}
+						else if(current_op == '*'){
+							final_result *= current_number; 
+						}
+						else if(current_op == '/'){
+							final_result /= current_number; 
+						}
+						current_op = '*';
+						
+						current_number = 0;
+					}
+					else if(message_buffer[i] == '/'){
+					
+						if(current_op == ' '){
+							final_result = current_number; 
+						}
+						else if(current_op == '+'){
+							final_result += current_number; 
+						}
+						else if(current_op == '-'){
+							final_result -= current_number; 
+						}
+						else if(current_op == '*'){
+							final_result *= current_number; 
+						}
+						else if(current_op == '/'){
+							final_result /= current_number; 
+						}
+						current_op = '/';
+						
+						current_number = 0;
+					}
+					
+					//else{
+					//	print("Mathematical operations only support +, -, *, and /.");
+					//	break;
+					//}	
+				}
+				// the last op will always be missed
+				if(current_op == '+'){
+					final_result += current_number; 
+				}
+				if(current_op == '-'){
+					final_result -= current_number; 
+				}
+				else if(current_op == '*'){
+					final_result *= current_number; 
+				}
+				else if(current_op == '/'){
+					final_result /= current_number; 
+				}
+				int a = final_result; 
+				int b = 0; 
+				
+				int c; 
+				if(current_op == ' '){
+					print("Calc: Expected an operand!");
+					print("\n");
+					break;
+				}
+				if(a == 0) { 
+					print("0");
+					print("\n");
+					break;
+				}
+				while(a != 0){
+					c = a % 10; 
+					b *= 10; 
+					b += c; 
+					a /= 10;
+				}
+				
+				a = b; 
+				b = 0;
+				while(a != 0){
+					c = a % 10; 
+					b *= 10; 
+					b += c; 
+					a /= 10;
+					
+					print_char(c+48, -1, -1, WHITE_ON_BLACK); 
+				}
+					
+				while(final_result % 10 == 0){
+					final_result /= 10; 
+					print_char(48, -1, -1, WHITE_ON_BLACK); 
+				}
+				print("\n");
+			}
+			else{
+				print("No such command \"");
+				print(message_buffer);
+				print("\"\n");
 			}
 			break;
 		}

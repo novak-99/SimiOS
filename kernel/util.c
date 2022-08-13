@@ -29,3 +29,10 @@ bool str_eq(char* str1, char* str2){
 		i++;
 	}
 }
+
+bool is_number(char* str){
+	for(int i = 48; i <= 57; i++){
+		if(str == i) return true; 
+	}
+	return false; 
+}
